@@ -87,15 +87,15 @@ public class Thumbnailer {
 
     public static float thumbScaleFactor(int w, int h) {
         int max = Math.max(w, h);
-        
+        //very naive scale factor but , gives the idea !!
         if (max > 600 && max < 1024) {
-            return 0.48F;
+            return 0.4F;
         }
         if (max > 1023 && max < 1480) {
-            return 0.38F;
+            return 0.3F;
         }
         if (max > 1479) {
-            return 0.28F;
+            return 0.2F;
         }
         
         return 1.F;

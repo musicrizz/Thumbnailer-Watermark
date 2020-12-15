@@ -48,7 +48,7 @@ public class Test {
     public void tearDown() {
     }
 
-    //@org.junit.Test
+    @org.junit.Test
     public void testThumbnailer() {
         
         byte[] out = null;
