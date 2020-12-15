@@ -1,2 +1,4 @@
 # Thumbnailer-Watermark
-Simple and efficient Thumbnail &amp; Wartermark generator
+<div>
+<p>Simple and efficient Thumbnail &amp; Wartermark generator</p>
+</div>
