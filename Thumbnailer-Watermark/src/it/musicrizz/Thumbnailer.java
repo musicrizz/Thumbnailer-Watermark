@@ -24,6 +24,11 @@ public class Thumbnailer {
     private static Logger log = Logger.getLogger(Thumbnailer.class.getName());
     
     public static byte[] createThumb(byte[] source) {
+        return createThumb(source, null);
+    }
+    
+    
+    public static byte[] createThumb(byte[] source, Float scaleFactor) {
 
         if (source == null || source.length == 0) {
             return null;
@@ -37,10 +42,16 @@ public class Thumbnailer {
             bff_src = ImageIO.read(new ByteArrayInputStream(source));
             int w = bff_src.getWidth();
             int h = bff_src.getHeight();
-            float scale = thumbScaleFactor(w, h);
+            
+            float scale = 0;
+            if (scaleFactor != null && scaleFactor > 0) {
+                 scale = scaleFactor;
+            }else{
+                scale = thumbScaleFactor(w, h);
+            }
 
-            w = numeroPari(Math.round(w * scale));
-            h = numeroPari(Math.round(h * scale));
+            w = even_number(Math.round(w * scale));
+            h = even_number(Math.round(h * scale));
 
             AffineTransform trasformation = AffineTransform.getScaleInstance(scale, scale);
             AffineTransformOp scaling = new AffineTransformOp(trasformation, AffineTransformOp.TYPE_BILINEAR);
@@ -70,21 +81,23 @@ public class Thumbnailer {
         return null;
     }
 
-    private static int numeroPari(int n) {
+    public static int even_number(int n) {
         return n % 2 == 0 ? n : n + 1;
     }
 
-    private static float thumbScaleFactor(int w, int h) {
+    public static float thumbScaleFactor(int w, int h) {
         int max = Math.max(w, h);
+        
         if (max > 600 && max < 1024) {
-            return 0.5F;
+            return 0.48F;
         }
         if (max > 1023 && max < 1480) {
-            return 0.4F;
+            return 0.38F;
         }
         if (max > 1479) {
-            return 0.3F;
+            return 0.28F;
         }
+        
         return 1.F;
     }
 

@@ -24,10 +24,14 @@ public class Watermark {
     private static Logger log = Logger.getLogger(Watermark.class.getName());
     
     public static byte[] createWatermark(byte[] source , String watermark) {
-        return  createWatermark(source , watermark, Color.WHITE, "Serif") ;
+        return  createWatermark(source , watermark, 0.035, Color.WHITE, "Serif") ;
     }
     
-    public static byte[] createWatermark(byte[] source , String watermark, Color color, String fontFamily)  {
+    public static byte[] createWatermark(byte[] source , String watermark, Color color, String fontFamily) {
+         return  createWatermark(source , watermark, 0.035, color, fontFamily) ;
+    }
+    
+    public static byte[] createWatermark(byte[] source , String watermark, double factor, Color color, String fontFamily)  {
         if (source == null || source.length == 0) {
             return null;
         }
@@ -41,7 +45,8 @@ public class Watermark {
             int w = bff_src.getWidth();
             int h = bff_src.getHeight();
             
-            Font font = new Font(fontFamily, Font.PLAIN, ((Double)Math.floor(Math.min(w, h)*0.035)).intValue());
+            int font_size = Thumbnailer.even_number(((Double)Math.floor(Math.min(w, h)*factor)).intValue());
+            Font font = new Font(fontFamily, Font.PLAIN, font_size);
             
             bff_dest = new BufferedImage(w, h, bff_src.getType());
             Graphics2D g_out = ((Graphics2D) (bff_dest.getGraphics()));
