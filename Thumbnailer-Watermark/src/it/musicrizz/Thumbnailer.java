@@ -22,13 +22,12 @@ import java.util.logging.Logger;
 public class Thumbnailer {
 
     private static Logger log = Logger.getLogger(Thumbnailer.class.getName());
-    
+
     public static byte[] createThumb(byte[] source) {
-        return createThumb(source, null);
+        return createThumb(source, 200);
     }
-    
-    
-    public static byte[] createThumb(byte[] source, Float scaleFactor) {
+
+    public static byte[] createThumb(byte[] source, int max_thumb_dimension) {
 
         if (source == null || source.length == 0) {
             return null;
@@ -42,22 +41,21 @@ public class Thumbnailer {
             bff_src = ImageIO.read(new ByteArrayInputStream(source));
             int w = bff_src.getWidth();
             int h = bff_src.getHeight();
-            
-            float scale = 0;
-            if (scaleFactor != null && scaleFactor > 0) {
-                 scale = scaleFactor;
-            }else{
-                scale = thumbScaleFactor(w, h);
+
+            float scaleFactor = thumbScaleFactor(w, h, max_thumb_dimension);
+
+            if (scaleFactor >= 1.0F) {
+                return source;
             }
 
-            w = even_number(Math.round(w * scale));
-            h = even_number(Math.round(h * scale));
+            w = even_number(Math.round(w * scaleFactor));
+            h = even_number(Math.round(h * scaleFactor));
 
-            AffineTransform trasformation = AffineTransform.getScaleInstance(scale, scale);
+            AffineTransform trasformation = AffineTransform.getScaleInstance(scaleFactor, scaleFactor);
             AffineTransformOp scaling = new AffineTransformOp(trasformation, AffineTransformOp.TYPE_BILINEAR);
 
-            bff_dest = new BufferedImage(w, h, bff_src.getType());
-            Graphics2D g_out = ((Graphics2D) (bff_dest.getGraphics()));
+            bff_dest = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g_out = bff_dest.createGraphics();
             g_out.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
             g_out.drawImage(bff_src, scaling, 0, 0);
 
@@ -67,7 +65,7 @@ public class Thumbnailer {
 
             return thumb_file.toByteArray();
         } catch (Exception e) {
-            log.severe(()->"Exception thumb creation : "+e.getLocalizedMessage());
+            log.severe(() -> "Exception thumb creation : " + e.getLocalizedMessage());
         } finally {
             try {
                 if (thumb_file != null) {
@@ -75,30 +73,26 @@ public class Thumbnailer {
                 }
                 bff_src = null;
                 bff_dest = null;
-            } catch (Exception e) { }
+            } catch (Exception e) {
+            }
         }
 
         return null;
     }
 
     public static int even_number(int n) {
-        return n % 2 == 0 ? n : n + 1;
+        return n % 2 == 0 ? n : ++n;
     }
 
-    public static float thumbScaleFactor(int w, int h) {
+    public static float thumbScaleFactor(int w, int h, int max_thumb_dimension) {
         int max = Math.max(w, h);
-        //very naive scale factor but , gives the idea !!
-        if (max > 600 && max < 1024) {
-            return 0.4F;
+
+        if (max <= max_thumb_dimension) {
+            return 1.0f;
         }
-        if (max > 1023 && max < 1480) {
-            return 0.3F;
-        }
-        if (max > 1479) {
-            return 0.2F;
-        }
-        
-        return 1.F;
+
+        return (float) max_thumb_dimension / (float) max;
+
     }
 
 }

@@ -48,8 +48,8 @@ public class Watermark {
             int font_size = Thumbnailer.even_number(((Double)Math.floor(Math.min(w, h)*factor)).intValue());
             Font font = new Font(fontFamily, Font.PLAIN, font_size);
             
-            bff_dest = new BufferedImage(w, h, bff_src.getType());
-            Graphics2D g_out = ((Graphics2D) (bff_dest.getGraphics()));
+            bff_dest = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g_out = bff_dest.createGraphics();
             g_out.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g_out.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
             g_out.drawImage(bff_src, null, 0, 0);          
