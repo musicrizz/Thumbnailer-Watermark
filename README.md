@@ -14,8 +14,8 @@
     <code>
       Files.write(spacex.resolve(Paths.get("../output", "spacexThumb.jpg")).normalize(), out, StandardOpenOption.CREATE);
     </code></br>
-    <p>result : <br/>spacexThumb.jpg = 360x240 13.33KB </p>
-    <img src="Thumbnailer-Watermark/test_resources/output/spacexThumb.jpg" >
+    <p>result : <br/>spacexThumb.jpg = 200x134 6.01KB </p>
+    <img src="Thumbnailer-Watermark/test_resources/output/thumb_spacex.jpg" >
   </div>
 </div>
 <hr/>
@@ -27,5 +27,5 @@
   <code>
   Files.write(spacex.resolve(Paths.get("../output", "spacexWatermark.jpg")).normalize(), out, StandardOpenOption.CREATE);
  </code></br>
- <img src="Thumbnailer-Watermark/test_resources/output/spacexWatermark.jpg" style="width: 26rem;">
+ <img src="Thumbnailer-Watermark/test_resources/output/watermk_spacex.jpg" style="width: 24rem;">
 </div>
