@@ -21,11 +21,11 @@
 <hr/>
 <div>
   <h5>Wartermark class</h5>
-  ```
+  <code> 
   byte[] out = <b>Watermark.createWatermark(Files.readAllBytes(spacex), "\u00A9www.spacex.com");</b>
- 
+  </code></br>
+  <code>
   Files.write(spacex.resolve(Paths.get("../output", "spacexWatermark.jpg")).normalize(), out, StandardOpenOption.CREATE);
- ```
- </br>
+ </code></br>
  <img src="Thumbnailer-Watermark/test_resources/output/watermk_spacex.jpg" style="width: 24rem;">
 </div>
